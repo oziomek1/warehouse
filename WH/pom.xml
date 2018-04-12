@@ -89,7 +89,8 @@
     </profiles>
     
   <modules>
-    <module>warehouse</module>
+    <module>warehouse-web</module>
+    <module>warehouse-lib</module>
   </modules>
     
     <repositories>
