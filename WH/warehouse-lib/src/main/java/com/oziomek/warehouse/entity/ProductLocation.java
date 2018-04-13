@@ -6,15 +6,18 @@
 package com.oziomek.warehouse.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -22,41 +25,40 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "PRODUCT_LOCATION")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ProductLocation.showAll", query = "SELECT l FROM Product_location l"),
-    @NamedQuery(name = "ProductLocation.findByLocationId", query = "SELECT l FROM Product_location l WHERE l.locationId = :locationId"),
-    @NamedQuery(name = "ProductLocation.findByProductId", query = "SELECT l FROM Product_location l WHERE l.productId = :productId"),
-    @NamedQuery(name = "ProductLocation.findByAlleyId", query = "SELECT l FROM Product_location l WHERE l.alleyId = :alleyId")})
+    @NamedQuery(name = "ProductLocation.findAll", query = "SELECT p FROM ProductLocation p")
+    , @NamedQuery(name = "ProductLocation.findByLocationId", query = "SELECT p FROM ProductLocation p WHERE p.locationId = :locationId")
+    , @NamedQuery(name = "ProductLocation.findByProductId", query = "SELECT p FROM ProductLocation p WHERE p.productId = :productId")
+    , @NamedQuery(name = "ProductLocation.findByAlleyId", query = "SELECT p FROM ProductLocation p WHERE p.alleyId = :alleyId")
+    , @NamedQuery(name = "ProductLocation.findByShelveNum", query = "SELECT p FROM ProductLocation p WHERE p.shelveNum = :shelveNum")
+    , @NamedQuery(name = "ProductLocation.findByProductAmt", query = "SELECT p FROM ProductLocation p WHERE p.productAmt = :productAmt")})
 public class ProductLocation implements Serializable {
-    
-    @Id
-    @NotNull
-    @Column(name = "LOCATIONID")
-    private Integer locationId;
 
-    @NotNull
-    @Column(name = "PRODUCTID")
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "LOCATION_ID")
+    private Integer locationId;
+    
+    @Column(name = "PRODUCT_ID")
     private Integer productId;
     
-    @Column(name = "ALLEYID")
+    @Column(name = "ALLEY_ID")
     private Integer alleyId;
     
-    @NotNull
     @Column(name = "SHELVE_NUM")
-    private Integer shelveNumber;
+    private Integer shelveNum;
     
     @Column(name = "PRODUCT_AMT")
-    private Integer productAmount;
+    private BigInteger productAmt;
 
     public ProductLocation() {
     }
 
-    public ProductLocation(Integer locationId, Integer productId, Integer alleyId, Integer shelveNumber, Integer productAmount) {
+    public ProductLocation(Integer locationId) {
         this.locationId = locationId;
-        this.productId = productId;
-        this.alleyId = alleyId;
-        this.shelveNumber = shelveNumber;
-        this.productAmount = productAmount;
     }
 
     public Integer getLocationId() {
@@ -83,20 +85,20 @@ public class ProductLocation implements Serializable {
         this.alleyId = alleyId;
     }
 
-    public Integer getShelveNumber() {
-        return shelveNumber;
+    public Integer getShelveNum() {
+        return shelveNum;
     }
 
-    public void setShelveNumber(Integer shelveNumber) {
-        this.shelveNumber = shelveNumber;
+    public void setShelveNum(Integer shelveNum) {
+        this.shelveNum = shelveNum;
     }
 
-    public Integer getProductAmount() {
-        return productAmount;
+    public BigInteger getProductAmt() {
+        return productAmt;
     }
 
-    public void setProductAmount(Integer productAmount) {
-        this.productAmount = productAmount;
+    public void setProductAmt(BigInteger productAmt) {
+        this.productAmt = productAmt;
     }
 
     @Override
@@ -107,21 +109,20 @@ public class ProductLocation implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object object) {
+        if (object == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(object instanceof ProductLocation)) {
             return false;
         }
-        final ProductLocation other = (ProductLocation) obj;
+        ProductLocation other = (ProductLocation) object;
         return Objects.equals(this.locationId, other.locationId);
     }
 
     @Override
     public String toString() {
-        return "ProductLocation{" + "locationId=" + locationId + ", productId=" + productId + ", alleyId=" + alleyId + ", shelveNumber=" + shelveNumber + ", productAmount=" + productAmount + '}';
+        return "com.oziomek.warehouse.entity.ProductLocation[ locationId=" + locationId + " ]";
     }
-    
     
 }

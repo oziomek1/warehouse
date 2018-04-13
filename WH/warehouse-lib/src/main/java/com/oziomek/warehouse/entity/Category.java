@@ -10,12 +10,15 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -23,105 +26,101 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "CATEGORY")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Category.showAll", query = "SELECT c FROM Category c")})
+    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c")
+    , @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id")
+    , @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")
+    , @NamedQuery(name = "Category.findBySubcategory", query = "SELECT c FROM Category c WHERE c.subcategory = :subcategory")
+    , @NamedQuery(name = "Category.findBySpecial", query = "SELECT c FROM Category c WHERE c.special = :special")})
 public class Category implements Serializable {
-    
+
+    private static final long serialVersionUID = 1L;
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "ID")
-    private Integer categoryId;
+    private Integer id;
     
+    @Basic(optional = false)
     @NotNull
-    @Size(min = 3, max = 25)
-    @Column(name = "CATEGORY")
-    private String category;
+    @Size(min = 1, max = 25)
+    @Column(name = "NAME")
+    private String name;
     
-    @Basic(optional = true)
-    @Size(min = 3, max = 40)
+    @Size(max = 40)
     @Column(name = "SUBCATEGORY")
-    private String subCategory;
-    
-    @Column(name = "DANGER")
-    private Boolean isDanger;
+    private String subcategory;
     
     @Column(name = "SPECIAL")
-    private Boolean isSpecial;
+    private Boolean special;
 
     public Category() {
     }
 
-    public Category(Integer categoryId, String category, String subCategory, Boolean isDanger, Boolean isSpecial) {
-        this.categoryId = categoryId;
-        this.category = category;
-        this.subCategory = subCategory;
-        this.isDanger = isDanger;
-        this.isSpecial = isSpecial;
+    public Category(Integer id) {
+        this.id = id;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Category(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public Integer getId() {
+        return id;
     }
 
-    public String getCategory() {
-        return category;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public String getName() {
+        return name;
     }
 
-    public String getSubCategory() {
-        return subCategory;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
+    public String getSubcategory() {
+        return subcategory;
     }
 
-    public Boolean getIsDanger() {
-        return isDanger;
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
-    public void setIsDanger(Boolean isDanger) {
-        this.isDanger = isDanger;
+    public Boolean getSpecial() {
+        return special;
     }
 
-    public Boolean getIsSpecial() {
-        return isSpecial;
-    }
-
-    public void setIsSpecial(Boolean isSpecial) {
-        this.isSpecial = isSpecial;
+    public void setSpecial(Boolean special) {
+        this.special = special;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = (categoryId != null ? categoryId.hashCode() : 0);
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object object) {
+        if (object == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(object instanceof Category)) {
             return false;
         }
-        final Category other = (Category) obj;
-        return Objects.equals(this.categoryId, other.categoryId);
+        Category other = (Category) object;
+        return Objects.equals(this.id, other.id);
     }
 
     @Override
     public String toString() {
-        return "Category{" + "categoryId=" + categoryId + ", category=" + category + ", subCategory=" + subCategory + ", isDanger=" + isDanger + ", isSpecial=" + isSpecial + '}';
+        return "com.oziomek.warehouse.entity.Category[ id=" + id + " ]";
     }
-    
     
 }

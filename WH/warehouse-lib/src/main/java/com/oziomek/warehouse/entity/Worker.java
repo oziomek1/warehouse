@@ -6,9 +6,12 @@
 package com.oziomek.warehouse.entity;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,163 +28,142 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "WORKER")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Worker.showAll", query = "SELECT w FROM Worker w")})
+    @NamedQuery(name = "Worker.findAll", query = "SELECT w FROM Worker w")
+    , @NamedQuery(name = "Worker.findById", query = "SELECT w FROM Worker w WHERE w.id = :id")
+    , @NamedQuery(name = "Worker.findByName", query = "SELECT w FROM Worker w WHERE w.name = :name")
+    , @NamedQuery(name = "Worker.findByBirthDate", query = "SELECT w FROM Worker w WHERE w.birthDate = :birthDate")
+    , @NamedQuery(name = "Worker.findByExperience", query = "SELECT w FROM Worker w WHERE w.experience = :experience")
+    , @NamedQuery(name = "Worker.findByJob", query = "SELECT w FROM Worker w WHERE w.job = :job")
+    , @NamedQuery(name = "Worker.findByHoursAWeek", query = "SELECT w FROM Worker w WHERE w.hoursAWeek = :hoursAWeek")
+    , @NamedQuery(name = "Worker.findByNightShift", query = "SELECT w FROM Worker w WHERE w.nightShift = :nightShift")})
 public class Worker implements Serializable {
-    
+
+    private static final long serialVersionUID = 1L;
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "ID")
-    private Integer workerId;
+    private Integer id;
     
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "NAME")
-    private String workerName;
+    private String name;
     
-    @Size(min = 3, max = 40)
-    @Column(name = "CITY")
-    private String workerCity;
-    
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "BIRTH_DATE")
-    private String workerBirthDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthDate;
     
     @Column(name = "EXPERIENCE")
-    private Integer workerExperience;
+    private Integer experience;
     
     @Column(name = "JOB")
-    private JobType workerJob;
-            
+    private JobType job;
+    
     @Column(name = "HOURS_A_WEEK")
-    private Integer workerHoursPerWeek;
+    private Integer hoursAWeek;
     
     @Column(name = "NIGHT_SHIFT")
-    private Boolean canNightShift;
+    private Boolean nightShift;
 
     public Worker() {
     }
 
-    public Worker(Integer workerId, String workerName, String workerCity, String workerBirthDate, Integer workerExperience, JobType workerJob, Integer workerHoursPerWeek, Boolean canNightShift) {
-        this.workerId = workerId;
-        this.workerName = workerName;
-        this.workerCity = workerCity;
-        this.workerBirthDate = workerBirthDate;
-        this.workerExperience = workerExperience;
-        this.workerJob = workerJob;
-        this.workerHoursPerWeek = workerHoursPerWeek;
-        this.canNightShift = canNightShift;
+    public Worker(Integer id) {
+        this.id = id;
     }
 
-    public Integer getWorkerId() {
-        return workerId;
+    public Worker(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public void setWorkerId(Integer workerId) {
-        this.workerId = workerId;
+    public Integer getId() {
+        return id;
     }
 
-    public String getWorkerName() {
-        return workerName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setWorkerName(String workerName) {
-        this.workerName = workerName;
+    public String getName() {
+        return name;
     }
 
-    public String getWorkerCity() {
-        return workerCity;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setWorkerCity(String workerCity) {
-        this.workerCity = workerCity;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public String getWorkerBirthDate() {
-        return workerBirthDate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setWorkerBirthDate(String workerBirthDate) {
-        this.workerBirthDate = workerBirthDate;
+    public Integer getExperience() {
+        return experience;
     }
 
-    public Integer getWorkerExperience() {
-        return workerExperience;
+    public void setExperience(Integer experience) {
+        this.experience = experience;
     }
 
-    public void setWorkerExperience(Integer workerExperience) {
-        this.workerExperience = workerExperience;
+    public JobType getJob() {
+        return job;
     }
 
-    public JobType getWorkerJob() {
-        return workerJob;
+    public void setJob(JobType job) {
+        this.job = job;
     }
 
-    public void setWorkerJob(JobType workerJob) {
-        this.workerJob = workerJob;
+    public Integer getHoursAWeek() {
+        return hoursAWeek;
     }
 
-    public Integer getWorkerHoursPerWeek() {
-        return workerHoursPerWeek;
+    public void setHoursAWeek(Integer hoursAWeek) {
+        this.hoursAWeek = hoursAWeek;
     }
 
-    public void setWorkerHoursPerWeek(Integer workerHoursPerWeek) {
-        this.workerHoursPerWeek = workerHoursPerWeek;
+    public Boolean getNightShift() {
+        return nightShift;
     }
 
-    public Boolean getCanNightShift() {
-        return canNightShift;
-    }
-
-    public void setCanNightShift(Boolean canNightShift) {
-        this.canNightShift = canNightShift;
+    public void setNightShift(Boolean nightShift) {
+        this.nightShift = nightShift;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = (workerId != null ? workerId.hashCode() : 0);
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Worker)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        Worker other = (Worker) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
-        final Worker other = (Worker) obj;
-        return Objects.equals(this.workerId, other.workerId);
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Worker{" + "workerId=" + workerId + ", workerName=" + workerName + ", workerCity=" + workerCity + ", workerBirthDate=" + workerBirthDate + ", workerExperience=" + workerExperience + ", workerJob=" + workerJob + ", workerHoursPerWeek=" + workerHoursPerWeek + ", canNightShift=" + canNightShift + '}';
+        return "com.oziomek.warehouse.entity.Worker[ id=" + id + " ]";
     }
     
     public enum JobType {
-        BEGINNER(0), JUNIOR(1), MIDDLE(2), SENIOR(3), MANAGER(4);
-        
-        private int value;
-        
-        JobType(int value) {
-            this.value = value;
-        }
-        
-        public int getValue() {
-            return this.value;
-        }
-        
-        public static JobType parse(int id) {
-            JobType jobType = null;
-            for (JobType job : JobType.values()) {
-                if (job.getValue() == id) {
-                    jobType = job;
-                    break;
-                }
-            }
-            return jobType;
-        }
+        BEGINNER, JUNIOR, MIDDLE, SENIOR, MANAGER;
     }
+    
 }
