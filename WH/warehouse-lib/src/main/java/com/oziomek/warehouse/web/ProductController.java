@@ -6,7 +6,6 @@
 package com.oziomek.warehouse.web;
 
 import com.oziomek.warehouse.entity.Product;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
